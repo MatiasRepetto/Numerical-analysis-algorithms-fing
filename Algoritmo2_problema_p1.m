@@ -38,7 +38,7 @@ do
   
 until (norm((X-Y),"fro") < epsilon) || Iteraciones > 5000
 
-if (Iteraciones <= 1000)
+if (Iteraciones <= 5000)
   encontro = encontro + 1
 else
   noencontro = noencontro + 1
