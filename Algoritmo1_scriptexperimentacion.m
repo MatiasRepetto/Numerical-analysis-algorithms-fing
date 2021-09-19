@@ -3,22 +3,16 @@ iteracionprueba = 0
 encontrototal = 0
 noencontrototal = 0
 tic
-do
+for iter=1:100
   valido = 0
   encontro = 0
   noencontro = 0
   Iteraciones = 0 
   epsilon = 10^(-10) %epsilon maquina
-  Dx = []
-  for ix = 1:10
-    Dx(ix) = (rand-(3/7))*100
-  endfor
-  for i = 1:length(Dx)
-    valido = valido + Dx(i)
-  endfor
-  if valido < 0
-    Dx(1) = (valido*-1) + 1 
-  endif
+  Dx = [3-0.9999,1+0.9999,-1,-1,-1,-1]
+  %for i=1:35
+  %  Dx(i)=((rand-(1/3))*100)
+  %endfor
   Dx = sort(Dx,'descend')
   Y = rand(length(Dx)) %Matriz Random Y positiva
   Y = Y+Y' %Hace simetrica Y
@@ -26,17 +20,17 @@ do
   do
   
     Iteraciones = Iteraciones+1;
-    [autovec,autoval] = eig(Y)
-    Dy = autoval
-    Vy = rot90(rot90(autovec))
-    Vyt = Vy'
-    Y = Vy*Dy*Vyt
+    [autovec,autoval]=eig(Y)
+    [autoval,perm] = sort(diag(autoval),'descend')
+    autovec=autovec(:,perm)
+    Vy = autovec
+    Vyt = transpose(Vy)
     X = Vy*diag(Dx)*Vyt
-    X = ((1/2)*(X + X'))
+    X = ((1/2)*(X + transpose(X)))
     Y = X
     Y(Y<0)=0
   
-  until norm((X-Y),"fro")<epsilon | Iteraciones > 1000
+  until (norm((X-Y),"fro")<epsilon) || (Iteraciones > 1000)
 
   if (Iteraciones <= 1000)
     encontro = encontro + 1;
@@ -46,9 +40,9 @@ do
   encontrototal = encontrototal + encontro
   noencontrototal = noencontrototal + noencontro
   iteracionestotales = iteracionestotales + Iteraciones
-  iteracionprueba = iteracionprueba + 1
+  iteracionprueba = iter
   
-until iteracionprueba > 100
+endfor
 toc
 
 printf("========================================================\n")

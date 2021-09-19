@@ -14,9 +14,10 @@ Y = Y+Y' %Hace simetrica Y
 do
   
   Iteraciones = Iteraciones+1;
-  [autovec,autoval] = eig(Y)
-  Dy = autoval
-  Vy = rot90(rot90(autovec))
+  [autovec,autoval]=eig(Y)
+  [autoval,perm] = sort(diag(autoval),'descend')
+  autovec=autovec(:,perm)
+  Vy = autovec
   Vyt = Vy'
   X = Vy*diag(Dx)*Vyt
   X = ((0.5)*(X + X'))
@@ -26,9 +27,9 @@ do
 until (norm((X-Y),"fro") < epsilon) | (Iteraciones > 1000)
 
 if (Iteraciones <= 1000)
-  encontro = encontro + 1;
+  encontro = encontro + 1
 else
-  noencontro = noencontro + 1;
+  noencontro = noencontro + 1
 endif
  
 printf("========================================================\n")
