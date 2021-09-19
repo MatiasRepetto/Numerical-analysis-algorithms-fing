@@ -1,40 +1,44 @@
 %Algoritmo2_problema_p1 grupo: 25 --- Ledesma, Repetto, Porcal, Rocha
 
 Iteraciones = 0 
-operacionlambda = 0
 encontro = 0
 noencontro = 0
-restdxtx = 0
-auxiliarmenor = 1000000
 epsilon = 10^(-10) %epsilon maquina
-Dx = [1+i, 1-i, 2+i, 2-i]
+Dx = [1+i, 1-i, 2-i, 2+i]
 Y = rand(length(Dx)) %Matriz Random Y positiva
 
 do
   
   Iteraciones = Iteraciones+1
-  [U,T] = schur(Y,'complex')
-  permutaciondex = perms(Dx)
-  [fil, col] = size(permutaciondex)
-  for i1 = 1:fil
-    opercionlambda = 0
-    for i2 = 1:col
-      vectoriter(i2) = permutaciondex(i1,i2) 
-    endfor
-    for i3 = 1:length(Dx)
-      operacionlambda = operacionlambda + (abs((vectoriter(i3)-T(i3,i3))))^(2)
-    endfor
-    if auxiliarmenor > operacionlambda
-      auxiliarmenor = operacionlambda
-      vectorfinal = vectoriter
-    endif
+  [U,T] = schur(Y, "complex")
+  [~,idx] = sort(abs(Dx), 'descend');
+  lambda = Dx(idx)
+  for i1= 1:length(Dx)
+    Diag(i1) = T(i1,i1)
   endfor
+  lambda1 = []
+  for i2 = 1:length(Dx)
+    lambda1(i2) = 0
+  endfor
+  for i = 1: length(lambda)
+      valor = 9999999999
+      posicion = 1
+      for j = 1:length(Dx)
+          if (lambda1(j) == 0) && (abs(lambda(i) - Diag(j))) < valor 
+              valor = abs(lambda(i) - Diag(j))
+              posicion = j
+          endif
+      endfor
+      lambda1(posicion) = lambda(i)
+  endfor
+  Tp = T
   for i4= 1:length(Dx)
-    T(i4,i4) = vectorfinal(i4)
+    Tp(i4,i4) = lambda1(i4)
   endfor
-  X = U*T*U'
+  X = U*Tp*U'
   Y = X
   Y(Y<0)=0
+  Y = real(Y)
   
 until (norm((X-Y),"fro") < epsilon) || Iteraciones > 5000
 
