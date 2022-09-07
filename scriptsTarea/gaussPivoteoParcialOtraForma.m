@@ -1,9 +1,9 @@
-clear all
-clearvars
+%clear all
+%clearvars
 
-A = [7 2 1;1 5 2;1 3 8] %estas matrices son de ejemplo
-B = [128 69 95]%estas matrices son de ejemplo
-B = B'
+%A = [7 2 1;1 5 2;1 3 8] %estas matrices son de ejemplo
+%B = [128 69 95]%estas matrices son de ejemplo
+%B = B'
 Aug = [A B]
 N = length(B)
 M = N+1
@@ -20,7 +20,7 @@ for i=1:N
   Aug(i,:)=Aug(p,:);
   Aug(p,:)=w;
   for k=i+1:N
-    pivote=Aug(k,i)/Aug(i,i);
+    pivote=Aug(k,i)*Aug(i,i);
     for j=i:M
       Aug(k,j)=Aug(k,j)-pivote*Aug(i,j);
     endfor

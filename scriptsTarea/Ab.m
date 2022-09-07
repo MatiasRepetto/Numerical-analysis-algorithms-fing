@@ -68,7 +68,7 @@ for i = 1:numero_ecuaciones
     sh_der = (m-1)*(i-1)/m+1;
     A(i,sv_inf) = 1;
     A(i,sv_sup) = -1;
-    A(i,sh_der) = (-1)^((i-1)/m);
+    A(i,sh_der) = (-1)^((i-1)/m-1);
     b(i) = flujosh((i-1)/m+1,1)*(-1)^((i-1)/m+1);
   endif
   # Centro / sin fronteras
@@ -85,13 +85,13 @@ for i = 1:numero_ecuaciones
     # A(6,17) = (-1)^3 = -1
 
     sv_inf = n*(m-1)+(n-1)*(mod(i,m)-1)+(i-mod(i,n))/n+1;
-    sv_sup = n*(m-1)+(n-1)*(mod(i,m)-1)+(i-mod(i,n))/n;
-    sh_der = (m-1)*(i-mod(i,n))/n+mod(i,m);
-    sh_izq = (m-1)*(i-mod(i,n))/n+mod(i,m)-1;
-    A(i,sv_inf) = (-1)^(mod(i,m)+1);
-    A(i,sv_sup) = (-1)^(mod(i,m));
-    A(i,sh_der) = (-1)^((i-mod(i,n))/n+1);
-    A(i,sh_izq) = (-1)^((i-mod(i,n))/n);
+    sv_sup = n*(m-1)+(n-1)*(mod(i,m)-1)+(i-mod(i,n))/n+2;
+    sh_der = (m-1)*(i-mod(i,m))/m+mod(i,m);
+    sh_izq = (m-1)*(i-mod(i,m))/m+mod(i,m)-1;
+    A(i,sv_inf) = (-1)^(mod(i,m));
+    A(i,sv_sup) = (-1)^(mod(i,m)+1);
+    A(i,sh_der) = (-1)^((i-mod(i,n))/n);
+    A(i,sh_izq) = (-1)^((i-mod(i,n))/n+1);
 
   endif
 endfor
