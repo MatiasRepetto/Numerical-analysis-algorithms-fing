@@ -104,12 +104,13 @@ for i = 57:numero_incognitas
   A(i,flujos(i-56,1)) = 1;
 
 endfor
-
 # Me fijo rango de A
 rank(A)
 # Hay una fila CL de las demás
 # Agrego S_81=0 a todas las ecuaciones => sumo 1 a col 81 de A
-A(:,81) = A(:,81)+1;
+A(:,81)=[];
+A(10,:)=[];
+b(10)=[];
 
 # Verifico rango de A y compruebo que las filas sean LI
 rank(A)
